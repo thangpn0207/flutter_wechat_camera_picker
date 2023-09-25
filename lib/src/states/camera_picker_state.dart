@@ -8,6 +8,7 @@ import 'dart:math' as math;
 
 import 'package:camera/camera.dart';
 import 'package:camera_platform_interface/camera_platform_interface.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
@@ -297,7 +298,7 @@ class CameraPickerState extends State<CameraPicker>
       // When the [cameraDescription] is null, which means this is the first
       // time initializing cameras, so available cameras should be fetched.
       if (cameraDescription == null) {
-        cameras = await availableCameras();
+        cameras = await _getCameraAvailableFlashMode();
       }
 
       // After cameras fetched, judge again with the list is empty or not to
@@ -867,6 +868,27 @@ class CameraPickerState extends State<CameraPicker>
       viewType: viewType,
       previewXFile: file,
     );
+  }
+
+  Future<List<CameraDescription>> _getCameraAvailableFlashMode() async {
+    final List<CameraDescription> listCameraAvailable = [];
+    final cameras = await availableCameras();
+    for (final element in cameras) {
+      if (element.lensDirection != CameraLensDirection.back) {
+        listCameraAvailable.add(element);
+      } else {
+        try {
+          await CameraController(element, ResolutionPreset.max)
+            ..setFlashMode(FlashMode.off);
+        } catch (e) {
+          if (kDebugMode) {
+            print('Flash is not available');
+          }
+        }
+        listCameraAvailable.add(element);
+      }
+    }
+    return listCameraAvailable;
   }
 
   ////////////////////////////////////////////////////////////////////////////
