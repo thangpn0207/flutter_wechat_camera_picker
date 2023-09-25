@@ -878,14 +878,16 @@ class CameraPickerState extends State<CameraPicker>
         listCameraAvailable.add(element);
       } else {
         try {
-          await CameraController(element, ResolutionPreset.max)
-            ..setFlashMode(FlashMode.off);
+          final controller =
+              await CameraController(element, ResolutionPreset.max)
+                ..setFlashMode(FlashMode.torch);
+          listCameraAvailable.add(element);
+          await controller.dispose();
         } catch (e) {
           if (kDebugMode) {
             print('Flash is not available');
           }
         }
-        listCameraAvailable.add(element);
       }
     }
     return listCameraAvailable;
