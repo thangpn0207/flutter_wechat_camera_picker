@@ -300,6 +300,9 @@ class CameraPickerState extends State<CameraPicker>
       if (cameraDescription == null) {
         cameras = await _getCameraAvailableFlashMode();
       }
+      if (cameras.isEmpty) {
+        Navigator.of(context).pop();
+      }
 
       // After cameras fetched, judge again with the list is empty or not to
       // ensure there is at least an available camera for use.
