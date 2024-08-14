@@ -3,23 +3,21 @@
 // in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:wechat_picker_library/wechat_picker_library.dart';
 
-import '../constants/styles.dart';
 import '../internals/methods.dart';
 
 final class CameraProgressButton extends StatefulWidget {
   const CameraProgressButton({
     super.key,
     required this.isAnimating,
-    required this.isBusy,
     required this.size,
     required this.ringsWidth,
-    this.ringsColor = wechatThemeColor,
+    this.ringsColor = defaultThemeColorWeChat,
     this.duration = const Duration(seconds: 15),
   });
 
   final bool isAnimating;
-  final bool isBusy;
   final Size size;
   final double ringsWidth;
   final Color ringsColor;
@@ -50,18 +48,6 @@ class _CircleProgressState extends State<CameraProgressButton>
   @override
   void didUpdateWidget(CameraProgressButton oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.isBusy != oldWidget.isBusy) {
-      if (widget.isBusy) {
-        progressController
-          ..reset()
-          ..stop();
-      } else {
-        progressController.value = 0.0;
-        if (!progressController.isAnimating) {
-          progressController.forward();
-        }
-      }
-    }
     if (widget.isAnimating != oldWidget.isAnimating) {
       if (widget.isAnimating) {
         progressController.forward();
@@ -79,20 +65,18 @@ class _CircleProgressState extends State<CameraProgressButton>
 
   @override
   Widget build(BuildContext context) {
-    if (!widget.isAnimating && !widget.isBusy) {
+    if (!widget.isAnimating) {
       return const SizedBox.shrink();
     }
-    return Center(
-      child: SizedBox.fromSize(
-        size: widget.size,
-        child: RepaintBoundary(
-          child: AnimatedBuilder(
-            animation: progressController,
-            builder: (_, __) => CircularProgressIndicator(
-              color: widget.ringsColor,
-              strokeWidth: widget.ringsWidth,
-              value: widget.isBusy ? null : progressController.value,
-            ),
+    return SizedBox.fromSize(
+      size: widget.size,
+      child: RepaintBoundary(
+        child: AnimatedBuilder(
+          animation: progressController,
+          builder: (_, __) => CircularProgressIndicator(
+            color: widget.ringsColor,
+            strokeWidth: widget.ringsWidth,
+            value: progressController.value,
           ),
         ),
       ),

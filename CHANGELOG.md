@@ -6,29 +6,67 @@ that can be found in the LICENSE file. -->
 
 See the [Migration Guide](guides/migration_guide.md) for breaking changes between versions.
 
-## 4.2.0-dev.3
+## 4.3.1
+
+### Improvements
+
+- Downgrades the default resolution preset from `max` to `ultraHigh`.
+- Improves pinch zooming experiences.
+- Do not wait for focus mode and exposure mode to reset.
+- Updates the capture actions section size to compatible with more cases.
+
+## 4.3.0+1
+
+### Fixes
+
+- Fixes the breaking `ColorScheme.background` implementation on older Flutter SDKs.
+
+## 4.3.0
+
+### Improvements
+
+- Adapt the latest interface of WeChat.
+
+### Fixes
+
+- Constraints `camera_android` version to resolves https://github.com/flutter/flutter/issues/150549.
+
+## 4.2.2
+
+### Fixes
+
+- Allows `wrapControllerMethod` to return nullable result.
+- Allows newer versions of `sensors_plus`.
+
+### Improvements
+
+- Provide the back button when no controller has been initialized.
+- Improves paddings of the heading actions in the viewer.
+
+## 4.2.1
+
+### Fixes
+
+- Fix ignore locks when exception throws.
+
+## 4.2.0
+
+### Breaking changes
+
+- Migrate to Flutter 3.16, and drop supports for previous Flutter versions.
+- Bump `photo_manager` to v3.x.
+- Export `photo_manager_image_provider`.
 
 ### Improvements
 
 - Roll `sensors_plus`.
 - Catch exceptions when obtain/subscribe to the accelerometer stream.
-
-## 4.2.0-dev.2
-
-### Breaking changes
-
-- Migrate to Flutter 3.16, and drop supports for previous Flutter versions.
+- Use `wechat_picker_library`.
 
 ### Fixes
 
 - Fix `onEntitySaving` not returned after called. (#223)
-
-## 4.2.0-dev.1
-
-### New features
-
-- Bump `photo_manager` to v3.x.
-- Export `photo_manager_image_provider`.
+- Predicate access denied to avoid deadlocks.
 
 ## 4.1.0
 
